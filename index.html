@@ -105,7 +105,7 @@
 								<p class="fragment">happy</p>
 							</div>
 				</section>
-				<section data-notes="In addition to the stack, we have webapis and task queue. Therefore, callback move to the webapis, and is executed there. console.log('am') doesn't need to wait for callback to execute. And it will work. When callback is executed it will move to the task queue. And if the stack is empty callback move to the stack.">
+				<section data-notes="In addition to the stack, we have webapis and task queue. Therefore, setTimeout move to the webapis from the stack, and is executed there. console.log('am') doesn't need to wait for setTimeout to execute. And it will move to the stack and executed. When setTimeout is executed callback will move to the task queue. And if the stack is empty callback move to the stack.">
 					<h5>Concurrency and the event loop</h5>
 					<div style="display:inline-block; width: 50%;">
 							<h6>Code</h6>
