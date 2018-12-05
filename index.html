@@ -65,7 +65,6 @@
 									let bar = $.getSync('//bar.com');
 	
 									console.log(foo);
-									console.log(bar);
 								</code>
 							</pre>
 						</div>
@@ -77,8 +76,6 @@
 							<p class="fragment" style="margin:4px 0; font-size:60%;">pop $.getSync('//bar.com')</p>
 							<p class="fragment" style="margin:4px 0; font-size:60%;">push console.log(foo)</p>
 							<p class="fragment" style="margin:4px 0; font-size:60%;">pop console.log(foo)</p>
-							<p class="fragment" style="margin:4px 0; font-size:60%;">push console.log(bar)</p>
-							<p class="fragment" style="margin:4px 0; font-size:60%;">pop console.log(bar)</p>
 						</div>
 					</section>
 				<section data-notes="The solution? Yes! This is asynchronous callbacks.">
