@@ -30,8 +30,7 @@
 					<h2>The call stack</h2>
 					<p>one thread == one call stack == one thing at a time</p>
 				</section>
-				<section data-notes="Let's take an example. We have two functions. Function printSum calls function sum. What will happen in the stack? 
-				First, the stack will get the function printSum. Then will get the function sum. Remove function sum. And at the end remove function printSum.">
+				<section data-notes="Let's take an example. We have two functions. Function printSum calls function sum. What will happen in the stack? First, the stack will get the function printSum. Then will get the function sum. Remove function sum. And at the end remove function printSum.">
 					<h5>Callstack</h5>
 					<div style="display:inline-block; width: 50%;">
 						<h6>Code</h6>
@@ -56,8 +55,7 @@
 					</div>
 				</section>
 				<section data-notes="Blocking. Let's imagine that js is not asynchronous language. In this situation, we would have a problem - blocking."><h2>Blocking</h2></section>
-				<section data-notes="Blocking is when the stack occupied by very long time functions. In this case, the browser is frozen. For example.
-				We have a network request. But the network request is slow. So we need to wait when he will be finished. While waiting for the browser is blocked.">
+				<section data-notes="Blocking is when the stack occupied by very long time functions. In this case, the browser is frozen. For example. We have a network request. But the network request is slow. So we need to wait when he will be finished. While waiting for the browser is blocked.">
 					<h5>Blocking</h5>
 						<div style="display:inline-block; width: 50%;">
 							<h6>Code</h6>
@@ -110,9 +108,7 @@
 								<p class="fragment">happy</p>
 							</div>
 				</section>
-				<section data-notes="In addition to the stack, we have webapis and queue. Therefore, setTimeout gets into the webapis and not in the stack, and is executed there.
-				console.log('am') no need to wait for setTimeout to execute. And it will work. When setTimeout is executed it will get into the queue. 
-				And if the stack is empty setTimeout gets on the stack.">
+				<section data-notes="In addition to the stack, we have webapis and queue. Therefore, setTimeout gets into the webapis and not in the stack, and is executed there. console.log('am') no need to wait for setTimeout to execute. And it will work. When setTimeout is executed it will get into the queue. And if the stack is empty setTimeout gets on the stack.">
 					<h5>Asynchronous callbacks</h5>
 					<div style="display:inline-block; width: 50%;">
 							<h6>Code</h6>
