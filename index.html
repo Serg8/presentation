@@ -1,0 +1,165 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>Event loop</title>
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/black.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section data-notes="Hello everyone! Today I am going to tell you about event loop."><h1>Event loop</h1></section>
+				<section data-notes="And first I need to say, that JS is a single-threaded non-blocking asynchronous concurrent language.">JS is a single-threaded non-blocking asynchronous concurrent language</section>
+				<section data-notes="What is the call stack? The call stack means one thread, one call stack, one thing at a time.">
+					<h2>The call stack</h2>
+					<p>one thread == one call stack == one thing at a time</p>
+				</section>
+				<section data-notes="Let's take an example. We have two functions. Function printSum calls function sum. What will happen in the stack? 
+				First, the stack will get the function printSum. Then will get the function sum. Remove function sum. And at the end remove function printSum.">
+					<h5>Callstack</h5>
+					<div style="display:inline-block; width: 50%;">
+						<h6>Code</h6>
+						<pre>
+							<code  data-trim class=" hljs cs">
+								function sum(a, b) {
+									return a + b;
+								}
+								function printSum() {
+									console.log(sum(5, 3));
+								}
+								printSum();
+							</code>
+						</pre>
+					</div>
+					<div style="display:inline-block;" id="fragments">
+						<h6>Stack</h6>
+						<p class="fragment">push printSum</p>
+						<p class="fragment">push sum</p>
+						<p class="fragment">pop sum</p>
+						<p class="fragment">pop printSum</p>
+					</div>
+				</section>
+				<section data-notes="Blocking. Let's imagine that js is not asynchronous language. In this situation, we would have a problem - blocking."><h2>Blocking</h2></section>
+				<section data-notes="Blocking is when the stack occupied by very long time functions. In this case, the browser is frozen. For example.
+				We have a network request. But the network request is slow. So we need to wait when he will be finished. While waiting for the browser is blocked.">
+					<h5>Blocking</h5>
+						<div style="display:inline-block; width: 50%;">
+							<h6>Code</h6>
+							<pre>
+								<code  data-trim class="hljs cs">
+									let foo = $.getSync('//foo.com');
+									let bar = $.getSync('//bar.com');
+	
+									console.log(foo);
+									console.log(bar);
+								</code>
+							</pre>
+						</div>
+						<div style="display:inline-block;width:49%;vertical-align:top;">
+							<h6>Stack</h6>
+							<p class="fragment" style="margin:4px 0; font-size:60%;">push $.getSync('//foo.com')</p>
+							<p class="fragment" style="margin:4px 0; font-size:60%;">pop $.getSync('//foo.com')</p>
+							<p class="fragment" style="margin:4px 0; font-size:60%;">push $.getSync('//bar.com')</p>
+							<p class="fragment" style="margin:4px 0; font-size:60%;">pop $.getSync('//bar.com')</p>
+							<p class="fragment" style="margin:4px 0; font-size:60%;">push console.log(foo)</p>
+							<p class="fragment" style="margin:4px 0; font-size:60%;">pop console.log(foo)</p>
+							<p class="fragment" style="margin:4px 0; font-size:60%;">push console.log(bar)</p>
+							<p class="fragment" style="margin:4px 0; font-size:60%;">pop console.log(bar)</p>
+						</div>
+					</section>
+				<section data-notes="The solution? Yes! This is asynchronous callbacks.">
+					<h2>The solution?</h2>
+					<p>asynchronous callbacks</p>
+				</section>
+				<section data-notes="Let's take an example. The console will output in the following order. First we'll see 'I', then 'am' and then 'happy'. Why is that?">
+					<h5>Asynchronous callbacks</h5>
+						<div style="display:inline-block; width: 50%;">
+								<h6>Code</h6>
+								<pre>
+									<code  data-trim class="hljs cs">
+										console.log('I');
+
+										setTimeout(function(){
+											console.log("happy");
+										}, 0);
+
+										console.log("am");
+									</code>
+								</pre>
+							</div>
+							<div style="display:inline-block;" id="fragments">
+								<h6>Console</h6>
+								<p class="fragment">I</p>
+								<p class="fragment">am</p>
+								<p class="fragment">happy</p>
+							</div>
+				</section>
+				<section data-notes="In addition to the stack, we have webapis and queue. Therefore, setTimeout gets into the webapis and not in the stack, and is executed there.
+				console.log('am') no need to wait for setTimeout to execute. And it will work. When setTimeout is executed it will get into the queue. 
+				And if the stack is empty setTimeout gets on the stack.">
+					<h5>Asynchronous callbacks</h5>
+					<div style="display:inline-block; width: 50%;">
+							<h6>Code</h6>
+							<pre>
+								<code  data-trim class="hljs cs">
+									console.log('I');
+
+									setTimeout(function(){
+										console.log("happy");
+									}, 0);
+
+									console.log("am");
+								</code>
+							</pre>
+						</div>
+					<div style="display:inline-block; width: 49%;" id="fragments">
+						<h6>stack, queue, webapis</h6>
+						<p class="fragment" style="margin:4px 0; font-size:60%;">push/pop console.log('I') to/from stack</p>
+						<p class="fragment" style="margin:4px 0; font-size:60%;">push console.log("happy") to webapis (implementation)</p>
+						<p class="fragment" style="margin:4px 0; font-size:60%;">push/pop console.log('am') to/from stack</p>
+						<p class="fragment" style="margin:4px 0; font-size:60%;">pop console.log("happy") from webapis</p>
+						<p class="fragment" style="margin:4px 0; font-size:60%;">push console.log("happy") to queue (waiting)</p>
+						<p class="fragment" style="margin:4px 0; font-size:60%;">pop console.log("happy") from queue</p>
+						<p class="fragment" style="margin:4px 0; font-size:60%;">push/pop console.log('happy') to/from stack</p>
+					</div>
+				</section>
+				<section data-notes="Thanks for attention :)">
+					<h5>Thanks for attention :)</h5>
+				</section>
+			</div>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+			// More info about config & dependencies:
+			// - https://github.com/hakimel/reveal.js#configuration
+			// - https://github.com/hakimel/reveal.js#dependencies
+			Reveal.initialize({
+				dependencies: [
+					{ src: 'plugin/markdown/marked.js' },
+					{ src: 'plugin/markdown/markdown.js' },
+					{ src: 'plugin/notes/notes.js', async: true },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+				]
+			});
+		</script>
+	</body>
+</html>
